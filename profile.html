@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ForTravel — Профиль</title>
+  <meta name="viewport" content="width=414, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      background: #333;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .app-mobile {
+      width: 375px;
+      height: 750px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px #2225;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .profile-header-tz {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 19px 16px 0 16px;
+      background: #fafbfc;
+    }
+    .profile-avatar-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 5px;
+      width: 98px;
+    }
+    .profile-avatar-tz {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: #e1e1e1 url('https://img.icons8.com/ios-filled/82/user-male-circle.png') center/64% no-repeat;
+      border: 3px solid #f4f5f7;
+      margin-bottom: 5px;
+      margin-left: 10px;
+    }
+    .profile-edit-tz {
+      font-size: 0.95rem;
+      color: #b5b6b9;
+      cursor: pointer;
+      margin-left: 10px;
+      margin-top: 2px;
+    }
+    .profile-header-icons {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      margin-top: 5px;
+    }
+    .profile-header-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f5f6f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0;
+      cursor: pointer;
+      position: relative;
+    }
+    .profile-header-icon svg, .profile-header-icon img {
+      width: 22px;
+      height: 22px;
+      filter: grayscale(1);
+    }
+    .profile-header-icon.bell {
+      position: relative;
+    }
+    .profile-header-icon.bell .notif-dot {
+      position: absolute;
+      right: 7px;
+      top: 8px;
+      width: 11px;
+      height: 11px;
+      background: #ff3757;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+    /* Инфо-блок */
+    .profile-info-tz {
+      margin: 12px 14px 0 14px;
+      background: #fff;
+      border-radius: 13px;
+      border: 1px solid #f1f3f6;
+      box-shadow: 0 1px 6px #dae0f380;
+      padding: 10px 0 2px 0;
+    }
+    .profile-nickname-tz {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #202a37;
+      margin-bottom: 2px;
+      margin-top: 2px;
+    }
+    .profile-fio-tz {
+      text-align: center;
+      font-size: 0.97rem;
+      color: #757a7f;
+      margin-bottom: 11px;
+    }
+    .profile-row-tz {
+      display: flex;
+      align-items: center;
+      padding: 8px 18px 7px 18px;
+      border-top: 1px solid #f1f1f3;
+      font-size: 0.97rem;
+      color: #262e38;
+      gap: 12px;
+    }
+    .profile-row-tz:first-child { border-top: none; }
+    .profile-row-icon {
+      width: 22px;
+      text-align: center;
+      opacity: 0.82;
+      flex-shrink: 0;
+    }
+    .profile-row-val {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .profile-row-val.placeholder {
+      color: #a6abb2;
+      font-style: italic;
+    }
+    /* Возраст, дата, зодиак */
+    .profile-row-multival {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.97rem;
+      color: #262e38;
+    }
+    .profile-zodiac { color: #888; font-size: 1.07rem; margin-left: 2px;}
+    /* Переключатель пола */
+    .profile-gender-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      padding: 10px 0 2px 0;
+    }
+    .gender-btn {
+      background: none;
+      border: none;
+      padding: 0 0 2px 0;
+      font-size: 2.1rem;
+      cursor: pointer;
+      color: #bdbdbd;
+      opacity: 0.85;
+      transition: color 0.18s, opacity 0.18s;
+    }
+    .gender-btn.active {
+      color: #007aff;
+      opacity: 1;
+    }
+    .gender-switch {
+      width: 38px;
+      height: 18px;
+      background: #e3e8f3;
+      border-radius: 10px;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 6px;
+    }
+    .gender-toggle {
+      width: 18px;
+      height: 18px;
+      background: #007aff;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: left 0.2s;
+    }
+    .gender-btn.female.active ~ .gender-switch .gender-toggle { left: 20px; }
+    /* Интересы */
+    .profile-tags-block {
+      margin: 10px 16px 0 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+      min-height: 38px;
+    }
+    .profile-tag-tz {
+      display: inline-flex;
+      align-items: center;
+      background: #f2f7fd;
+      color: #556a7c;
+      font-size: 0.97rem;
+      border-radius: 14px;
+      padding: 6px 12px 6px 11px;
+      margin-right: 2px;
+      border: 1px solid #e3eaf6;
+      gap: 7px;
+      margin-bottom: 2px;
+    }
+    .profile-tag-close {
+      color: #bbb;
+      font-size: 1.09em;
+      cursor: pointer;
+      margin-left: 2px;
+      transition: color 0.17s;
+    }
+    .profile-tag-close:hover { color: #f33; }
+    .profile-tag-plus {
+      background: #e4f3ff;
+      color: #1890ff;
+      border-radius: 14px;
+      padding: 5px 11px;
+      font-size: 1.17em;
+      border: 1px solid #b8e6fd;
+      cursor: pointer;
+      margin-left: 4px;
+      margin-bottom: 2px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .profile-tag-plus:hover { background: #cceafd; color: #007aff; }
+    @media (max-width: 430px) {
+      .app-mobile { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+    }
+    /* TabBar и FAB */
+    .tabbar {
+      width: 100%;
+      height: 56px;
+      background: #fff;
+      border-top: 1px solid #e9ebef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      box-shadow: 0 0.5px 12px #8ab5d61a;
+    }
+    .tabbar-btn {
+      flex: 1;
+      text-align: center;
+      font-size: 1.25rem;
+      color: #7b8fb2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding-top: 2px;
+      transition: color 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      position: relative;
+      z-index: 2;
+    }
+    .tabbar-btn.active { color: #007aff; }
+    .tabbar-btn span {
+      font-size: 0.80rem;
+      margin-top: -2px;
+      font-weight: 500;
+    }
+    .fab-in-tabbar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(120deg, #2dcafc 40%, #007aff 95%);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px #7ecbff40;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      margin: 0 4px;
+      z-index: 5;
+      transition: box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .fab-in-tabbar:active { box-shadow: 0 1px 6px #76e1ff; }
+  </style>
+</head>
+<body>
+  <div class="app-mobile">
+    <!-- Header -->
+    <div class="profile-header-tz">
+      <div class="profile-avatar-block">
+        <div class="profile-avatar-tz"></div>
+        <div class="profile-edit-tz">Изменить</div>
+      </div>
+      <div class="profile-header-icons">
+        <div class="profile-header-icon bell" title="Уведомления">
+          <img src="https://img.icons8.com/ios-glyphs/30/bell.png" alt="bell"/>
+          <div class="notif-dot"></div>
+        </div>
+        <a href="settings.html"><div class="profile-header-icon" title="Настройки">
+          <img src="https://img.icons8.com/ios-glyphs/30/settings--v1.png" alt="settings"/>
+        </div></a>
+        <div class="profile-header-icon" title="Выйти">
+          <img src="https://img.icons8.com/ios-glyphs/30/logout-rounded--v1.png" alt="exit"/>
+        </div>
+      </div>
+    </div>
+    <div class="profile-info-tz">
+      <div class="profile-nickname-tz">@Легенда123</div>
+      <div class="profile-fio-tz">Игорь Карпов</div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/user--v1.png" width="20"/>
+      </span><span class="profile-row-val">Легенда123</span></div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/identification-documents.png" width="20"/>
+      </span><span class="profile-row-val">Игорь Карпов</span></div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/city.png" width="20"/>
+      </span><span class="profile-row-val">Москва</span></div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/country.png" width="20"/>
+      </span><span class="profile-row-val">Российская Федерация</span></div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/new-post.png" width="20"/>
+      </span><span class="profile-row-val">Igor.Karpov@google.com</span></div>
+      <div class="profile-row-tz"><span class="profile-row-icon">
+        <img src="https://img.icons8.com/ios-glyphs/30/phone.png" width="20"/>
+      </span><span class="profile-row-val placeholder">Добавьте номер телефона...</span></div>
+      <div class="profile-row-tz">
+        <span class="profile-row-icon">
+          <img src="https://img.icons8.com/ios-glyphs/30/planner.png" width="20"/>
+        </span>
+        <span class="profile-row-multival">
+          11.09.1982
+          <span style="color:#a7adb2;">|</span>
+          42 года
+          <span class="profile-zodiac">♍️</span>
+        </span>
+      </div>
+      <div class="profile-gender-block">
+        <button class="gender-btn female" title="Женский">♀️</button>
+        <div class="gender-switch"><div class="gender-toggle" style="left:20px"></div></div>
+        <button class="gender-btn male active" title="Мужской">♂️</button>
+      </div>
+      <div class="profile-tags-block">
+        <span class="profile-tag-tz">Лыжи/Сноуборд <span class="profile-tag-close">×</span></span>
+        <span class="profile-tag-tz">Фотография <span class="profile-tag-close">×</span></span>
+        <span class="profile-tag-tz">Дайвинг <span class="profile-tag-close">×</span></span>
+        <span class="profile-tag-tz">Сёрфинг <span class="profile-tag-close">×</span></span>
+        <span class="profile-tag-tz">Пляжи <span class="profile-tag-close">×</span></span>
+        <span class="profile-tag-plus" title="Добавить интерес">+</span>
+      </div>
+      <br>
+    </div>
+    <!-- TabBar -->
+    <div class="tabbar">
+      <a href="index.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/home.png" alt="Главная" width="22" />
+        <span>Главная</span>
+      </a>
+      <a href="discovery.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/compass.png" alt="Дискавери" width="22" />
+        <span>Дискавери</span>
+      </a>
+      <a href="new-object.html" class="fab-in-tabbar" title="Добавить">
+        +
+      </a>
+      <a href="spiski.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/checklist.png" alt="Списки" width="22" />
+        <span>Списки</span>
+      </a>
+      <a href="profile.html" class="tabbar-btn active">
+        <img src="https://img.icons8.com/ios-filled/24/user.png" alt="Профиль" width="22" />
+        <span>Профиль</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

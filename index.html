@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ForTravel — Главная</title>
+  <meta name="viewport" content="width=414, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      background: #333; /* тёмный фон вокруг макета */
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .app-mobile {
+      width: 375px;
+      height: 750px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px #2225;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 16px 10px 16px;
+      background: #fafbfc;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e1e1e1 url('https://img.icons8.com/ios-filled/50/user-male-circle.png') center/60% no-repeat;
+      border: 1.5px solid #eee;
+    }
+    .username {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #232323;
+    }
+    .header-notify {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f0f1f6 url('https://img.icons8.com/ios-filled/24/bell.png') center/60% no-repeat;
+      cursor: pointer;
+    }
+    .map {
+      width: 100%;
+      height: 100px;
+      background: #d1e9ff url('https://img.icons8.com/ios-filled/100/map.png') center/45% no-repeat;
+      margin-bottom: 1px;
+    }
+    .switcher {
+      display: flex;
+      width: 100%;
+      background: #f6f8fa;
+      border-bottom: 1px solid #e7eaf0;
+    }
+    .switcher-btn {
+      flex: 1;
+      text-align: center;
+      padding: 13px 0 8px 0;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #727373;
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-bottom 0.2s;
+    }
+    .switcher-btn.active {
+      color: #007aff;
+      border-bottom: 2.5px solid #007aff;
+      background: #f0f8ff;
+    }
+    .cards-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0 62px 0;
+      background: #f8fafb;
+    }
+    .trip-card {
+      margin: 14px 14px 0 14px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 7px #dae0f380;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #f1f3f6;
+    }
+    .trip-photo {
+      width: 100%;
+      height: 90px;
+      background: #eaeaea url('https://img.icons8.com/ios-filled/100/mountains.png') center/54% no-repeat;
+    }
+    .trip-content {
+      padding: 12px 14px 8px 14px;
+    }
+    .trip-title {
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: #23334f;
+      margin-bottom: 2px;
+    }
+    .trip-dates {
+      font-size: 0.97rem;
+      color: #666a7a;
+      margin-bottom: 1px;
+    }
+    .trip-status {
+      font-size: 0.91rem;
+      color: #169f65;
+      background: #f2fdf7;
+      display: inline-block;
+      border-radius: 8px;
+      padding: 2px 8px;
+      margin-bottom: 5px;
+      margin-top: 1px;
+    }
+    .trip-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 5px;
+    }
+    .trip-action {
+      flex: 1;
+      text-align: center;
+      color: #007aff;
+      background: #f6f7fb;
+      border: none;
+      border-radius: 7px;
+      padding: 5px 0;
+      font-size: 0.97rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .trip-action:hover {
+      background: #e5f0ff;
+    }
+    /* TabBar и FAB */
+    .tabbar {
+      width: 100%;
+      height: 56px;
+      background: #fff;
+      border-top: 1px solid #e9ebef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      box-shadow: 0 0.5px 12px #8ab5d61a;
+    }
+    .tabbar-btn {
+      flex: 1;
+      text-align: center;
+      font-size: 1.25rem;
+      color: #7b8fb2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding-top: 2px;
+      transition: color 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      position: relative;
+      z-index: 2;
+    }
+    .tabbar-btn.active {
+      color: #007aff;
+    }
+    .tabbar-btn span {
+      font-size: 0.80rem;
+      margin-top: -2px;
+      font-weight: 500;
+    }
+    .fab-in-tabbar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(120deg, #2dcafc 40%, #007aff 95%);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px #7ecbff40;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      margin: 0 4px;
+      z-index: 5;
+      transition: box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .fab-in-tabbar:active {
+      box-shadow: 0 1px 6px #76e1ff;
+    }
+    /* Моб. адаптация */
+    @media (max-width: 430px) {
+      .app-mobile {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-mobile">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="avatar"></div>
+        <div class="username">Анна</div>
+      </div>
+      <div class="header-notify" title="Уведомления"></div>
+    </div>
+    <!-- Map -->
+    <div class="map"></div>
+    <!-- Switcher -->
+    <div class="switcher">
+      <button class="switcher-btn active">Поездки</button>
+      <a href="mesta.html" class="switcher-btn">Места</a>
+    </div>
+    <!-- List -->
+    <div class="cards-list">
+      <div class="trip-card">
+        <div class="trip-photo"></div>
+        <div class="trip-content">
+          <div class="trip-title">Весенний Стамбул</div>
+          <div class="trip-dates">10–16 июня 2024</div>
+          <div class="trip-status">В планах</div>
+          <div class="trip-actions">
+            <button class="trip-action">Удалить</button>
+            <button class="trip-action">Поделиться</button>
+          </div>
+        </div>
+      </div>
+      <div class="trip-card">
+        <div class="trip-photo"></div>
+        <div class="trip-content">
+          <div class="trip-title">Поездка в Казань</div>
+          <div class="trip-dates">1–3 мая 2024</div>
+          <div class="trip-status" style="color:#777;background:#f3f4f7;">Завершена</div>
+          <div class="trip-actions">
+            <button class="trip-action">Удалить</button>
+            <button class="trip-action">Поделиться</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TabBar -->
+    <div class="tabbar">
+      <a href="index.html" class="tabbar-btn active">
+        <img src="https://img.icons8.com/ios-filled/24/home.png" alt="Главная" width="22" />
+        <span>Главная</span>
+      </a>
+      <a href="discovery.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/compass.png" alt="Дискавери" width="22" />
+        <span>Дискавери</span>
+      </a>
+      <a href="new-object.html" class="fab-in-tabbar" title="Добавить">
+        +
+      </a>
+      <a href="spiski.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/checklist.png" alt="Списки" width="22" />
+        <span>Списки</span>
+      </a>
+      <a href="profile.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/user.png" alt="Профиль" width="22" />
+        <span>Профиль</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

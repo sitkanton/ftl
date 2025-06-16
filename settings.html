@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ForTravel — Настройки</title>
+  <meta name="viewport" content="width=414, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      background: #333;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .app-mobile {
+      width: 375px;
+      height: 750px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px #2225;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .header-settings {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 18px 0 12px 7px;
+      background: #fafbfc;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 6px;
+    }
+    .back-btn {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f1f2f7;
+      border: none;
+      cursor: pointer;
+      font-size: 1.37rem;
+      color: #8a8d92;
+      transition: background 0.18s;
+      margin-right: 6px;
+    }
+    .back-btn:hover {
+      background: #e5e8ee;
+      color: #2d81f7;
+    }
+    .settings-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #1d2432;
+      margin-left: 3px;
+    }
+    .settings-content {
+      flex: 1;
+      overflow-y: auto;
+      background: #f8fafb;
+      padding: 16px 0 70px 0;
+    }
+    .settings-block {
+      background: #fff;
+      border-radius: 13px;
+      border: 1px solid #f1f3f6;
+      box-shadow: 0 1px 6px #dae0f380;
+      margin: 0 14px 18px 14px;
+      padding: 11px 16px 10px 16px;
+    }
+    .settings-block-title {
+      font-size: 1.01rem;
+      font-weight: 600;
+      color: #1c3344;
+      margin-bottom: 8px;
+      margin-left: 2px;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      border-top: 1px solid #f1f1f3;
+      font-size: 0.97rem;
+      color: #262e38;
+      gap: 12px;
+    }
+    .settings-row:first-child { border-top: none; }
+    .settings-row-label {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .settings-row-input {
+      border: none;
+      background: none;
+      font-size: 0.97rem;
+      color: #222d41;
+      padding: 0;
+      outline: none;
+      text-align: right;
+      width: 120px;
+    }
+    .settings-switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 21px;
+      margin-right: 4px;
+    }
+    .settings-switch input { opacity: 0; width: 0; height: 0; }
+    .settings-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #e3e8f3;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .settings-switch input:checked + .settings-slider {
+      background: #47cdf7;
+    }
+    .settings-slider:before {
+      position: absolute;
+      content: "";
+      height: 17px;
+      width: 17px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 3px #aacffa38;
+    }
+    .settings-switch input:checked + .settings-slider:before {
+      transform: translateX(17px);
+      background: #007aff;
+    }
+    .settings-link {
+      color: #2486ee;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.97rem;
+      transition: color 0.13s;
+      margin-left: 2px;
+    }
+    .settings-link:hover { color: #0050b3; }
+    .settings-exit {
+      display: block;
+      margin: 40px 16px 0 16px;
+      color: #e94c3c;
+      background: #fff5f5;
+      border-radius: 8px;
+      padding: 12px 0 12px 16px;
+      font-size: 1.01rem;
+      font-weight: 500;
+      border: 1px solid #ffebeb;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      text-align: left;
+    }
+    .settings-exit:hover {
+      background: #ffeaea;
+      color: #b52318;
+    }
+    @media (max-width: 430px) {
+      .app-mobile { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+    }
+    .tabbar {
+      width: 100%;
+      height: 56px;
+      background: #fff;
+      border-top: 1px solid #e9ebef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      box-shadow: 0 0.5px 12px #8ab5d61a;
+    }
+    .tabbar-btn {
+      flex: 1;
+      text-align: center;
+      font-size: 1.25rem;
+      color: #7b8fb2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding-top: 2px;
+      transition: color 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      position: relative;
+      z-index: 2;
+    }
+    .tabbar-btn.active { color: #007aff; }
+    .tabbar-btn span {
+      font-size: 0.80rem;
+      margin-top: -2px;
+      font-weight: 500;
+    }
+    .fab-in-tabbar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(120deg, #2dcafc 40%, #007aff 95%);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px #7ecbff40;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      margin: 0 4px;
+      z-index: 5;
+      transition: box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .fab-in-tabbar:active { box-shadow: 0 1px 6px #76e1ff; }
+  </style>
+</head>
+<body>
+  <div class="app-mobile">
+    <!-- Header -->
+    <div class="header-settings">
+      <button class="back-btn" title="Назад" onclick="window.history.back()">&#8592;</button>
+      <span class="settings-title">Настройки</span>
+    </div>
+    <div class="settings-content">
+      <div class="settings-block">
+        <div class="settings-block-title">Персональные данные</div>
+        <div class="settings-row">
+          <span class="settings-row-label">Почта</span>
+          <input class="settings-row-input" type="email" value="anna@example.com" readonly />
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Телефон</span>
+          <input class="settings-row-input" type="tel" placeholder="+7 ..." />
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Пароль</span>
+          <a class="settings-link" href="#">Изменить</a>
+        </div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-title">Уведомления</div>
+        <div class="settings-row">
+          <span class="settings-row-label">Пуш-уведомления</span>
+          <label class="settings-switch">
+            <input type="checkbox" checked>
+            <span class="settings-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Email-рассылки</span>
+          <label class="settings-switch">
+            <input type="checkbox">
+            <span class="settings-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-title">Приложение</div>
+        <div class="settings-row">
+          <span class="settings-row-label">Язык</span>
+          <select class="add-form-select" style="width:90px;">
+            <option selected>Русский</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Тёмная тема</span>
+          <label class="settings-switch">
+            <input type="checkbox">
+            <span class="settings-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">О приложении</span>
+          <a class="settings-link" href="#">v1.0</a>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Политика конфиденциальности</span>
+          <a class="settings-link" href="#">Читать</a>
+        </div>
+      </div>
+      <a href="#" class="settings-exit">Выйти из аккаунта</a>
+    </div>
+    <!-- TabBar -->
+    <div class="tabbar">
+      <a href="index.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/home.png" alt="Главная" width="22" />
+        <span>Главная</span>
+      </a>
+      <a href="discovery.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/compass.png" alt="Дискавери" width="22" />
+        <span>Дискавери</span>
+      </a>
+      <a href="new-poezdka.html" class="fab-in-tabbar" title="Добавить">
+        +
+      </a>
+      <a href="spiski.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/checklist.png" alt="Списки" width="22" />
+        <span>Списки</span>
+      </a>
+      <a href="profile.html" class="tabbar-btn">
+        <img src="https://img.icons8.com/ios-filled/24/user.png" alt="Профиль" width="22" />
+        <span>Профиль</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
